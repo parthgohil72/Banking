@@ -1,26 +1,39 @@
 package com.ebanking.accounts.Model;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @MappedSuperclass
-@Getter @Setter @ToString
+@EntityListeners(AuditingEntityListener.class)
+@Getter
+@Setter
+@ToString
 public class BaseEntity {
 
+    @CreatedDate
     @Column(updatable = false)
-    private LocalDate createAt;
+    private LocalDateTime createAt;
 
+    @CreatedBy
     @Column(updatable = false)
     private String createdBy;
 
+    @LastModifiedDate
     @Column(updatable = false)
-    private LocalDate updateAt;
+    private LocalDateTime updateAt;
 
+    @LastModifiedBy
     @Column(updatable = false)
     private String updatedBy;
 

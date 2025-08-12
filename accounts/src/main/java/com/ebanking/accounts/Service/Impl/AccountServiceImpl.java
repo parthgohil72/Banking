@@ -34,8 +34,6 @@ public class AccountServiceImpl implements IAccountIService {
             throw new CustomerAlreadyExistsExcep("Customer already exists with given phone number"
                     + customerDTO.getNumber());
         }
-        customer.setCreateAt(LocalDate.now());
-        customer.setCreatedBy("Parth");
         Customer saveCustomer = customerRepository.save(customer);
         accountRepository.save(createAccount(saveCustomer));
     }
@@ -49,8 +47,6 @@ public class AccountServiceImpl implements IAccountIService {
         accounts.setAccountNumber(randomAccNumber);
         accounts.setAccountType(Constants.SAVINGS);
         accounts.setBranchAddress(Constants.ADDRESS);
-        accounts.setCreateAt(LocalDate.now());
-        accounts.setCreatedBy("Parth");
         return accounts;
     }
 
@@ -94,7 +90,7 @@ public class AccountServiceImpl implements IAccountIService {
     @Override
     public boolean deleteAccount(String number) {
         Customer customer = customerRepository.findByNumber(number).orElseThrow(
-                ()-> new ResourceNotFoundException("Customer","Mobile No", number)
+                () -> new ResourceNotFoundException("Customer", "Mobile No", number)
         );
         accountRepository.deleteByCustomerId(customer.getCustomerId());
         customerRepository.deleteById(customer.getCustomerId());
