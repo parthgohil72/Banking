@@ -5,8 +5,12 @@ import lombok.*;
 
 
 @Entity
-@Getter @Setter @ToString @NoArgsConstructor @AllArgsConstructor
-public class Customer extends BaseEntity{
+@Getter
+@Setter
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
+public class Customer extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,6 +20,6 @@ public class Customer extends BaseEntity{
 
     private String email;
 
-    @Column(name="mobile_number")
+    @Column(name = "mobile_number")
     private String number;
 }

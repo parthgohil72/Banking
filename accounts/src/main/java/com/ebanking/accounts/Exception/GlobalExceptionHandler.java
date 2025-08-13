@@ -5,7 +5,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.lang.Nullable;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -66,6 +65,17 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 LocalDateTime.now()
         );
         return new ResponseEntity<>(errorDTO, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(CardAlreadyExsistsException.class)
+    public ResponseEntity<ErrorDTO> cardAlreadyExsistsException(CardAlreadyExsistsException cardAlreadyExsistsException, WebRequest webRequest) {
+        ErrorDTO errorDTO = new ErrorDTO(
+                webRequest.getDescription(false),
+                HttpStatus.BAD_REQUEST,
+                cardAlreadyExsistsException.getMessage(),
+                LocalDateTime.now()
+        );
+        return new ResponseEntity<>(errorDTO, HttpStatus.BAD_REQUEST);
     }
 
 }
