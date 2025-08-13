@@ -6,4 +6,6 @@ public interface ICardService {
 
     void createAdd(String number);
 
+    CardDTO fetchCard(String number);
+
 }

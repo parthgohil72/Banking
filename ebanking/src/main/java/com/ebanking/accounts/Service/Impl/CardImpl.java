@@ -3,6 +3,8 @@ package com.ebanking.accounts.Service.Impl;
 import com.ebanking.accounts.Constants.CardConstants;
 import com.ebanking.accounts.DTO.CardDTO;
 import com.ebanking.accounts.Exception.CardAlreadyExsistsException;
+import com.ebanking.accounts.Exception.ResourceNotFoundException;
+import com.ebanking.accounts.Mapper.CardMapper;
 import com.ebanking.accounts.Model.Card;
 import com.ebanking.accounts.Repository.CardRepository;
 import com.ebanking.accounts.Service.ICardService;
@@ -20,12 +22,14 @@ public class CardImpl implements ICardService {
 
     @Override
     public void createAdd(String number) {
-        Optional<Card> optionalCard = cardRepository.findByCardNumber(number);
+        Optional<Card> optionalCard = cardRepository.findByMobileNumber(number);
         if (optionalCard.isPresent()) {
             throw new CardAlreadyExsistsException("Card already registered with given mobileNumber " + number);
         }
         cardRepository.save(createNewCard(number));
     }
+
+
 
     private Card createNewCard(String number) {
         Card card = new Card();
@@ -37,5 +41,13 @@ public class CardImpl implements ICardService {
         card.setAmountUsed(0);
         card.setAvailableAmount(CardConstants.NEW_CARD_LIMIT);
         return card;
+    }
+
+    @Override
+    public CardDTO fetchCard(String number) {
+        Card card = cardRepository.findByMobileNumber(number).orElseThrow(
+                ()-> new ResourceNotFoundException("Card","Mobile Number",number)
+        );
+        return CardMapper.mapToCardDTO(card,new CardDTO());
     }
 }
